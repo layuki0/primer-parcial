@@ -1,5 +1,7 @@
+import random
 print("Bienvenido a BBVA")
 ejecutar = True
+
 
 nip = 2435
 intentos = 3
@@ -24,29 +26,49 @@ print("Hola", nombre, "tienes", ahorro, "pesos en tu cuenta.")
 limite_transferencia = 12000
 
 while ejecutar:
-    print("******Seleciona una opcion******")
-    print(nombre + " La opción es para retirar dinero , 1")
-    print(nombre + " La opcion es para abonar dinero , 2")
-    print(nombre + " La opcion es para consultar transferir , 3")
-    print(nombre + " La opcion es para salir , 4")
-    print(nombre + " La opcion es para pagar servicios (agua/luz/internet) , 5")
+    menu_options = ["retirar", "abonar", "transferir", "servicios", "salir"]
+    random.shuffle(menu_options)
+
+    print("******Selecciona una opcion******")
+    for idx, opt in enumerate(menu_options, start=1):
+        if opt == "retirar":
+            etiqueta = f"{nombre} La opción es para retirar dinero"
+        elif opt == "abonar":
+            etiqueta = f"{nombre} La opcion es para abonar dinero"
+        elif opt == "transferir":
+            etiqueta = f"{nombre} La opcion es para consultar transferir"
+        elif opt == "servicios":
+            etiqueta = f"{nombre} La opcion es para pagar servicios (agua/luz/internet)"
+        elif opt == "salir":
+            etiqueta = f"{nombre} La opcion es para salir"
+        print(f"{idx}. {etiqueta}")
     print("********************************")
 
-    opcion = int(input(" que opcion deseas elegir?"))
+    entrada = input("Ingrese el número de la opción que desea elegir: ")
+    try:
+        opcion_num = int(entrada)
+        if not 1 <= opcion_num <= len(menu_options):
+            print("Opción no válida")
+            continue
+    except ValueError:
+        print("Entrada no válida. Ingrese un número.")
+        continue
 
-    if opcion == 1:
+    opcion = menu_options[opcion_num - 1]
+
+    if opcion == "retirar":
         print(nombre + " ha seleccionado la opción de retirar dinero")
-        
         retiro = int(input("cuanto dinero desea retirar?"))
         ahorro = ahorro - retiro
         print("tu nuevo saldo es de", ahorro)
-        
-    elif opcion == 2:
+
+    elif opcion == "abonar":
         print(nombre + " ha seleccionado la opción de abonar")
         abono = int(input("cuanto dinero desea abonar?"))
         ahorro = ahorro + abono
         print("tu nuevo saldo es de", ahorro)
-    elif opcion == 3:
+
+    elif opcion == "transferir":
         print(nombre + " ha seleccionado la opción de transferir ")
         transferencia = int(input("cuanto dinero desea transferir? "))
         if transferencia > limite_transferencia:
@@ -56,11 +78,8 @@ while ejecutar:
         else:
             ahorro -= transferencia
             print("Transferencia realizada. Tu nuevo saldo es de", ahorro)
-    elif opcion == 4:
-        print("gracias por usar nuestros servicios")
-        ejecutar = False
-    elif opcion == 5:
-        # Nuevo: menú de servicios
+
+    elif opcion == "servicios":
         print("Seleccione el servicio a pagar:")
         print("1. Agua - 800")
         print("2. Luz - 1200")
@@ -85,6 +104,8 @@ while ejecutar:
         else:
             ahorro -= monto
             print("Pago de", nombre_servicio, "realizado por", monto, "pesos. Nuevo saldo:", ahorro)
-    else:
-        print("Opción no válida")
+
+    elif opcion == "salir":
+        print("gracias por usar nuestros servicios")
+        ejecutar = False
 
